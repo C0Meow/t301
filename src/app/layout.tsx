@@ -24,16 +24,13 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <html lang="en">
-        <body>{children}</body>
+      <TRPCReactProvider cookies={cookies().toString()}>
     <html lang="en">
       <body className={`font-sans ${inter.variable}`}>
-        <TRPCReactProvider cookies={cookies().toString()}>
           {children}
-        </TRPCReactProvider>
       </body>
     </html>
-    </html>
+        </TRPCReactProvider>
     </ClerkProvider>
   );
 }
