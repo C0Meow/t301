@@ -1,3 +1,4 @@
+import { SignIn, SignInButton, SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 
 import { CreatePost } from "~/app/_components/create-post";
@@ -11,7 +12,19 @@ export default async function Home() {
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
         <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
           Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
+          <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
         </h1>
+        <div>
+          <SignedOut>
+            <SignInButton>
+              <button>Sign in with Clerk</button>
+            </SignInButton>
+          </SignedOut>
+          <SignedIn>
+        {/* Mount the UserButton component */}
+          <UserButton />
+        </SignedIn>
+        </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
           <Link
             className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
