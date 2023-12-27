@@ -20,3 +20,13 @@ model Post {
 
     @@index([name])
 }
+
+model Order {
+    id        Int      @id @default(autoincrement())
+    userId String 
+    name      String
+    createdAt DateTime @default(now())
+    content String @db.VarChar(255)
+
+    @@index([userId ])
+}
