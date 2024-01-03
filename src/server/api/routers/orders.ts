@@ -35,7 +35,7 @@ export const orderRouter = createTRPCRouter({
         data: {
           userId: input.userId,
           name: input.name,
-          content: input.content,
+          content: input.content,  
         },
       });
     }),
@@ -62,7 +62,7 @@ export const orderRouter = createTRPCRouter({
 
     return order.map((order) => {
       const author = users.find((user) => user.id === order.userId);
-      if (!author) {
+      if (!author || !author.username) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "AUTHOR NOT FOUND",
@@ -70,7 +70,10 @@ export const orderRouter = createTRPCRouter({
       }
       return {
         order,
-        author,
+        author: {
+          ...author,
+          username: author.username,
+        },
       };
     });
   }),

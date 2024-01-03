@@ -7,9 +7,17 @@ import { RouterOutputs } from "~/trpc/shared";
 
 type OrderWithUser = RouterOutputs["orders"]["getAll"][number];
 const OrderView = (props: OrderWithUser) =>{
-  const {order, author} = props;
-      return(<div key= {order.id} className="p-8 border-border-slate-50">{order.id} {order.name } {order.content}
-      <img src={author.imageurl} alt="author pfp"/>
+  const {order, author} = props; 
+      return(<div key= {order.id} className="flex p-4 gap-4 border-border-slate-50">
+      <img src={author.imageurl} alt="author pfp" className="h-14 w-14 rounded-full"/>
+        <div className="flex flex-col text-slate-300">
+          <div className="flex">
+            <span>
+              {`@${author.username}`}
+            </span>
+          </div>
+           <span>{order.id} {order.name } {order.content}</span>
+        </div>
       </div>
     );
   };
@@ -22,7 +30,7 @@ export default async function Home() {
   console.log(user);
     if(!user) return ( 
       <main className="flex h-screen w-full justify-center text-black">
-        <div className="h-full w-full border-x border-slate-400 md:max-w-2xl bg-gradient-to-b from-[#fca5a5] to-[#fef2f2] ">
+        <div className="h-full w-full border-x border-slate-400 md:max-w-2xl bg-gradient-to-b from-[#030712] to-[#374151] ">
           <h1 className="text-5xl font-extrabold tracking-tight sm:text-[3rem]">
   
             <div className="flex border-b-2 border-slate-50">
@@ -60,46 +68,29 @@ export default async function Home() {
     );;
   
     return (
-    
       <main className="flex h-screen w-full justify-center text-black">
-      <div className="h-full w-full border-x-1 border-slate-400 md:max-w-2xl bg-gradient-to-b from-[#fca5a5] to-[#fef2f2] ">
+      <div className="h-full w-full border-x-2 border-slate-400 md:max-w-2xl bg-gradient-to-b from-[#030712] to-[#374151] ">
         <h1 className="text-2xl font-extrabold tracking-tight sm:text-[3rem]">
 
-          <div className="flex h-12 border-slate-50 border-b-2">
+          <div className="flex p-4 gap-4 border-slate-50 border-b-2 text-slate-300">
           welcome {user?.firstName} →
           <SignedIn>
-          <UserButton/>
-        </SignedIn>
+            <div>
+              <span className="content-right h-screen">
+                  <UserButton/>
+              </span>
+            </div>
+          </SignedIn>
         </div>
           <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
         </h1>
-        
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-            href="https://create.t3.gg/en/usage/first-steps"
-            target="_blank"
-          >
-            <h3 className="text-2xl font-bold">First Steps →</h3>
-            <div className="text-lg">
-            </div>
-          </Link>
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-            href="https://create.t3.gg/en/introduction"
-            target="_blank"
-          >
-            <h3 className="text-2xl font-bold">Documentation →</h3>
-            <div className="text-lg">
-            </div>
-          </Link>
-        </div> 
-          <input placeholder="Input your order" className="grow w-full h-10 rounded-3xl md:gap-3 text-center bg-white outline-none"/>
-
-          <div className="flex flex-col border-b-2 border-slate-50">
-          {[...data]?.map((fullOrder) => (<OrderView {...fullOrder} key={fullOrder.order.id}/>))}   
+          <div className="flex w-full p-4 gap-4 border-b-2 border-slate-50">
+            <img src={user.imageUrl} alt="author pfp" className="h-14 w-14 rounded-full"/>
+            <input placeholder="Input your order" className="grow bg-transparent outline-none text-slate-300"/>  
+          </div>
+          <div className="flex fl ex-col border-b-2 border-slate-50">
+            {[...data]?.map((fullOrder) => (<OrderView {...fullOrder} key={fullOrder.order.id}/>))} 
         </div>
-        <CrudShowcase />
       </div>
     </main>)
    }
