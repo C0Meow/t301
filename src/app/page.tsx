@@ -3,17 +3,25 @@ import Link from "next/link";
 
 import { CreatePost } from "~/app/_components/create-post";
 import { api } from "~/trpc/server";
-import { RouterOutputs } from "~/trpc/shared";
+import type { RouterOutputs } from "~/trpc/shared";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime"
+import Image from "next/image";
+ 
+dayjs.extend(relativeTime);
 
 type OrderWithUser = RouterOutputs["orders"]["getAll"][number];
 const OrderView = (props: OrderWithUser) =>{
   const {order, author} = props; 
       return(<div key= {order.id} className="flex p-4 gap-4 border-border-slate-50">
-      <img src={author.imageurl} alt="author pfp" className="h-14 w-14 rounded-full"/>
-        <div className="flex flex-col text-slate-300">
-          <div className="flex">
+      <Image src={author.imageurl} alt={`@${author.username} 's profile picture`} width={56} height={56}  className="h-14 w-14 rounded-full"/>
+        <div className="flex flex-col font-bold text-slate-300">
+          <div className="flex gap-1">
             <span>
               {`@${author.username}`}
+            </span>
+            <span className="font-thin">
+              {` · ${dayjs(order.createdAt).fromNow()}`}
             </span>
           </div>
            <span>{order.id} {order.name } {order.content}</span>
@@ -85,7 +93,7 @@ export default async function Home() {
           <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
         </h1>
           <div className="flex w-full p-4 gap-4 border-b-2 border-slate-50">
-            <img src={user.imageUrl} alt="author pfp" className="h-14 w-14 rounded-full"/>
+            <Image src={user.imageUrl} alt={`@${user.username} 's profile picture`} width={56} height={56} className="h-14 w-14 rounded-full"/ >
             <input placeholder="What's up?" className="grow bg-transparent outline-none text-slate-300"/>  
           </div>
           <div className="flex fl ex-col border-b-2 border-slate-50">
