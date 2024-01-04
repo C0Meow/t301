@@ -8,7 +8,8 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime"
 import Image from "next/image";
 import { Suspense } from "react";
-import { LoadingPage, LoadingSpinner } from "~/components/loading";
+import { LoadingPage } from "~/components/loading";
+import { LoggedInPage } from "~/components/loggedin";
  
 dayjs.extend(relativeTime);
 
@@ -17,7 +18,7 @@ const OrderView = (props: OrderWithUser) =>{
   const {order, author} = props; 
       return(<div key= {order.id} className="flex p-4 gap-4 border-border-slate-50">
       <Image src={author.imageurl} alt={`@${author.username} 's profile picture`} width={56} height={56}  className="h-14 w-14 rounded-full"/>
-        <div className="flex flex-col font-bold text-slate-300">
+        <div className="flex flex-col text-slate-300">
           <div className="flex gap-1">
             <span>
               {`@${author.username}`}
@@ -32,12 +33,16 @@ const OrderView = (props: OrderWithUser) =>{
     );
   };
 
+  const Feed =()=>{
+    
+  }
 export default async function Home() {
 
   const data = await api.orders.getAll.query();
   if (!data) return <div>No data </div>;
 
   const user = await currentUser();
+   
   console.log(user);
     if(!user) return ( 
       <main className="flex h-screen w-full justify-center text-black">
@@ -79,7 +84,6 @@ export default async function Home() {
     );;
   
     return (
-      <Suspense fallback={<LoadingPage/>}>
       <main className="flex h-screen w-full justify-center text-black">
       <div className="h-full w-full border-x-2 border-slate-400 md:max-w-2xl bg-gradient-to-b from-[#030712] to-[#374151] ">
         <h1 className="text-2xl font-extrabold tracking-tight sm:text-[3rem]">
@@ -100,12 +104,16 @@ export default async function Home() {
             <Image src={user.imageUrl} alt={`@${user.username} 's profile picture`} width={56} height={56} className="h-14 w-14 rounded-full"/ >
             <input placeholder="What's up?" className="grow bg-transparent outline-none text-slate-300"/>  
           </div>
-            <div className="flex fl ex-col border-b-2 border-slate-50">
+            <div className="flex flex-col border-b-2 border-slate-50">
               {[...data]?.map((fullOrder) => (<OrderView {...fullOrder} key={fullOrder.order.id}/>))} 
             </div>
+            <div>
+            <Suspense fallback={<LoadingPage/>}>
+              <LoggedInPage/>
+            </Suspense>
+            </div>
       </div>
-    </main>
-    </Suspense>)
+    </main>)
    }
 
 async function CrudShowcase() {
