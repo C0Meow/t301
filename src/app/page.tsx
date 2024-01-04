@@ -7,6 +7,8 @@ import type { RouterOutputs } from "~/trpc/shared";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime"
 import Image from "next/image";
+import { Suspense } from "react";
+import { LoadingSpinner } from "~/components/loading";
  
 dayjs.extend(relativeTime);
 
@@ -31,6 +33,7 @@ const OrderView = (props: OrderWithUser) =>{
   };
 
 export default async function Home() {
+
   const data = await api.orders.getAll.query();
   if (!data) return <div>No data </div>;
 
@@ -96,9 +99,11 @@ export default async function Home() {
             <Image src={user.imageUrl} alt={`@${user.username} 's profile picture`} width={56} height={56} className="h-14 w-14 rounded-full"/ >
             <input placeholder="What's up?" className="grow bg-transparent outline-none text-slate-300"/>  
           </div>
-          <div className="flex fl ex-col border-b-2 border-slate-50">
-            {[...data]?.map((fullOrder) => (<OrderView {...fullOrder} key={fullOrder.order.id}/>))} 
-        </div>
+          <Suspense fallback={<LoadingSpinner/>}>
+            <div className="flex fl ex-col border-b-2 border-slate-50">
+              {[...data]?.map((fullOrder) => (<OrderView {...fullOrder} key={fullOrder.order.id}/>))} 
+            </div>
+        </Suspense>
       </div>
     </main>)
    }
