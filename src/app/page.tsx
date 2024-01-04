@@ -30,13 +30,13 @@ export default async function Home() {
   console.log(user);
     if(!user) return ( 
       <main className="flex h-screen w-full justify-center text-black">
-        <div className="h-full w-full border-x border-slate-400 md:max-w-2xl bg-gradient-to-b from-[#030712] to-[#374151] ">
+        <div className="h-full w-full border-x-2 border-slate-50 md:max-w-2xl bg-gradient-to-b from-[#fca5a5] to-[#fef2f2] ">
           <h1 className="text-5xl font-extrabold tracking-tight sm:text-[3rem]">
   
             <div className="flex border-b-2 border-slate-50">
             <SignedOut>
               <SignInButton>
-                <button className="">Sign in with Clerk</button>
+                <button className="flex gap-4 p-4 justify-center">Click here to sign in</button>
               </SignInButton>
             </SignedOut>
           </div>
@@ -86,7 +86,7 @@ export default async function Home() {
         </h1>
           <div className="flex w-full p-4 gap-4 border-b-2 border-slate-50">
             <img src={user.imageUrl} alt="author pfp" className="h-14 w-14 rounded-full"/>
-            <input placeholder="Input your order" className="grow bg-transparent outline-none text-slate-300"/>  
+            <input placeholder="What's up?" className="grow bg-transparent outline-none text-slate-300"/>  
           </div>
           <div className="flex fl ex-col border-b-2 border-slate-50">
             {[...data]?.map((fullOrder) => (<OrderView {...fullOrder} key={fullOrder.order.id}/>))} 
