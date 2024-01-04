@@ -79,6 +79,7 @@ export default async function Home() {
     );;
   
     return (
+      <Suspense fallback={<LoadingSpinner/>}>
       <main className="flex h-screen w-full justify-center text-black">
       <div className="h-full w-full border-x-2 border-slate-400 md:max-w-2xl bg-gradient-to-b from-[#030712] to-[#374151] ">
         <h1 className="text-2xl font-extrabold tracking-tight sm:text-[3rem]">
@@ -99,13 +100,12 @@ export default async function Home() {
             <Image src={user.imageUrl} alt={`@${user.username} 's profile picture`} width={56} height={56} className="h-14 w-14 rounded-full"/ >
             <input placeholder="What's up?" className="grow bg-transparent outline-none text-slate-300"/>  
           </div>
-          <Suspense fallback={<LoadingSpinner/>}>
             <div className="flex fl ex-col border-b-2 border-slate-50">
               {[...data]?.map((fullOrder) => (<OrderView {...fullOrder} key={fullOrder.order.id}/>))} 
             </div>
-        </Suspense>
       </div>
-    </main>)
+    </main>
+    </Suspense>)
    }
 
 async function CrudShowcase() {
