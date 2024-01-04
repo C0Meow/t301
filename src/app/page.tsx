@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime"
 import Image from "next/image";
 import { Suspense } from "react";
-import { LoadingSpinner } from "~/components/loading";
+import { LoadingPage, LoadingSpinner } from "~/components/loading";
  
 dayjs.extend(relativeTime);
 
@@ -79,7 +79,7 @@ export default async function Home() {
     );;
   
     return (
-      <Suspense fallback={<LoadingSpinner/>}>
+      <Suspense fallback={<LoadingPage/>}>
       <main className="flex h-screen w-full justify-center text-black">
       <div className="h-full w-full border-x-2 border-slate-400 md:max-w-2xl bg-gradient-to-b from-[#030712] to-[#374151] ">
         <h1 className="text-2xl font-extrabold tracking-tight sm:text-[3rem]">
