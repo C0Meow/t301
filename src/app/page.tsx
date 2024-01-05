@@ -33,9 +33,6 @@ const OrderView = (props: OrderWithUser) =>{
     );
   };
 
-  const Feed =()=>{
-    
-  }
 export default async function Home() {
 
   const data = await api.orders.getAll.query();
