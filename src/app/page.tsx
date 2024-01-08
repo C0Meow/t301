@@ -7,9 +7,7 @@ import type { RouterOutputs } from "~/trpc/shared";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime"
 import Image from "next/image";
-import { Suspense } from "react";
-import { LoadingPage } from "~/components/loading";
-import { LoggedInPage } from "~/components/loggedin";
+import { sleep } from "~/utils";
  
 dayjs.extend(relativeTime);
 
@@ -34,7 +32,7 @@ const OrderView = (props: OrderWithUser) =>{
   };
 
 export default async function Home() {
-
+  await sleep(1000);
   const data = await api.orders.getAll.query();
   if (!data) return <div>No data </div>;
 
@@ -45,6 +43,9 @@ export default async function Home() {
       <main className="flex h-screen w-full justify-center text-black">
         <div className="h-full w-full border-x-2 border-slate-50 md:max-w-2xl bg-gradient-to-b from-[#fca5a5] to-[#fef2f2] ">
           <h1 className="text-5xl font-extrabold tracking-tight sm:text-[3rem]">
+            <span>
+              loading.tsx
+            </span>
   
             <div className="flex border-b-2 border-slate-50">
             <SignedOut>
@@ -82,6 +83,9 @@ export default async function Home() {
   
     return (
       <main className="flex h-screen w-full justify-center text-black">
+        <span>
+          loading.tsx
+        </span>
       <div className="h-full w-full border-x-2 border-slate-400 md:max-w-2xl bg-gradient-to-b from-[#030712] to-[#374151] ">
         <h1 className="text-2xl font-extrabold tracking-tight sm:text-[3rem]">
 
@@ -105,9 +109,6 @@ export default async function Home() {
               {[...data]?.map((fullOrder) => (<OrderView {...fullOrder} key={fullOrder.order.id}/>))} 
             </div>
             <div>
-            <Suspense fallback={<LoadingPage/>}>
-              <LoggedInPage/>
-            </Suspense>
             </div>
       </div>
     </main>)

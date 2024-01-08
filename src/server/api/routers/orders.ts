@@ -72,7 +72,7 @@ export const orderRouter = createTRPCRouter({
         order,
         author: {
           ...author,
-          username: author.username,
+          username: author.username, 
         },
       };
     });
