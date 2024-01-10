@@ -67,7 +67,7 @@ export const orderRouter = createTRPCRouter({
 
     return order.map((order) => {
       const author = users.find((user) => user.id === order.userId);
-      if (!author?.username) {
+      if (!author?.id) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "AUTHOR NOT FOUND",
