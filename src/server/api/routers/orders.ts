@@ -1,9 +1,14 @@
 import { User } from "@clerk/backend/dist/types/api";
 import { clerkClient, useUser } from "@clerk/nextjs";
 import { TRPCError } from "@trpc/server";
+import { Input } from "postcss";
 import { z } from "zod";
 
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  privateProcedure,
+  publicProcedure,
+} from "~/server/api/trpc";
 import { RouterOutputs } from "~/trpc/shared";
 
 const filterUserForClient = (user: User) => {
@@ -19,26 +24,26 @@ export const orderRouter = createTRPCRouter({
       };
     }),
 
-  create: publicProcedure
-    .input(
-      z.object({
-        name: z.string().min(1),
-        userId: z.string().min(1),
-        content: z.string().min(1),
-      }),
-    )
-    .mutation(async ({ ctx, input }) => {
-      // simulate a slow db call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+  // create: publicProcedure
+  //   .input(
+  //     z.object({
+  //       name: z.string().min(1),
+  //       userId: z.string().min(1),
+  //       content: z.string().min(1),
+  //     }),
+  //   )
+  //   .mutation(async ({ ctx, input }) => {
+  //     // simulate a slow db call
+  //     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      return ctx.db.order.create({
-        data: {
-          userId: input.userId,
-          name: input.name,
-          content: input.content,
-        },
-      });
-    }),
+  //     return ctx.db.order.create({
+  //       data: {
+  //         userId: input.userId,
+  //         name: input.name,
+  //         content: input.content,
+  //       },
+  //     });
+  //   }),
 
   getLatest: publicProcedure.query(({ ctx }) => {
     return ctx.db.order.findFirst({
@@ -72,9 +77,31 @@ export const orderRouter = createTRPCRouter({
         order,
         author: {
           ...author,
-          username: author.username, 
+          username: author.username,
         },
       };
     });
   }),
+
+  create: privateProcedure
+    .input(
+      z.object({
+        contentInput: z.string().min(1).max(280),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      if (!ctx.userId) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+        });
+      }
+      const order = await ctx.db.order.create({
+        data: {
+          userId: ctx.userId,
+          name: ctx.userId,
+          content: input.contentInput,
+        },
+      });
+      return order;
+    }),
 });

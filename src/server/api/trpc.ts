@@ -6,10 +6,11 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import { getAuth } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs";
+import { users } from "@clerk/nextjs/api";
 import { contextProps } from "@trpc/react-query/shared";
-import { initTRPC } from "@trpc/server";
-import { CreateNextContextOptions } from "@trpc/server/adapters/next";
+import { TRPCError, initTRPC } from "@trpc/server";
+import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
@@ -28,9 +29,12 @@ import { db } from "~/server/db";
  * @see https://trpc.io/docs/server/context
  */
 export const createTRPCContext = async (opts: {headers: Headers}) => {
+  const sesh = auth();
+  const userId = sesh.userId;
   return {
     db,
     ...opts,
+    userId,
   };
 };
 
@@ -91,14 +95,18 @@ export const createTRPCRouter = t.router;
 export const publicProcedure = t.procedure;
 
 const enforceUserIsAuth = t.middleware( async ({ ctx, next })=>{
-  if (!ctx.session){
-    throw new Error("not authenticated");
+  if (!ctx.userId){
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+    });
   }
 
   return next({
     ctx:{
-      session: ctx.session,
+      currentUser: ctx.userId,
     }
   }
   )
 });
+
+export const privateProcedure = t.procedure.use(enforceUserIsAuth);

@@ -1,6 +1,6 @@
 import { SignIn, SignInButton, SignedIn, SignedOut, UserButton, currentUser } from "@clerk/nextjs";
 import Link from "next/link";
-
+import { useUser } from "@clerk/nextjs";
 import { CreatePost } from "~/app/_components/create-post";
 import { api } from "~/trpc/server";
 import type { RouterOutputs } from "~/trpc/shared";
@@ -8,28 +8,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime"
 import Image from "next/image";
 import { sleep } from "~/utils";
- 
-dayjs.extend(relativeTime);
-
-type OrderWithUser = RouterOutputs["orders"]["getAll"][number];
-const OrderView = (props: OrderWithUser) =>{
-  const {order, author} = props; 
-      return(<div key= {order.id} className="flex p-4 gap-4 border-border-slate-50">
-      <Image src={author.imageurl} alt={`@${author.username} 's profile picture`} width={56} height={56}  className="h-14 w-14 rounded-full"/>
-        <div className="flex flex-col text-slate-300">
-          <div className="flex gap-1">
-            <span>
-              {`@${author.username}`}
-            </span>
-            <span className="font-thin">
-              {` · ${dayjs(order.createdAt).fromNow()}`}
-            </span>
-          </div>
-           <span>{order.id} {order.name } {order.content}</span>
-        </div>
-      </div>
-    );
-  };
+import LoggedIn from "./LoggedIn/page";
 
 export default async function Home() {
   await sleep(1000);
@@ -37,15 +16,15 @@ export default async function Home() {
   if (!data) return <div>No data </div>;
 
   const user = await currentUser();
-   
+  
   console.log(user);
     if(!user) return ( 
       <main className="flex h-screen w-full justify-center text-black">
+        <span>
+          loading.tsx
+        </span>
         <div className="h-full w-full border-x-2 border-slate-50 md:max-w-2xl bg-gradient-to-b from-[#fca5a5] to-[#fef2f2] ">
           <h1 className="text-5xl font-extrabold tracking-tight sm:text-[3rem]">
-            <span>
-              loading.tsx
-            </span>
   
             <div className="flex border-b-2 border-slate-50">
             <SignedOut>
@@ -54,7 +33,7 @@ export default async function Home() {
               </SignInButton>
             </SignedOut>
           </div>
-            <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
+            <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" afterSignInUrl="/LoggedIn/page.tsx"/>
           </h1>
           
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
@@ -82,50 +61,6 @@ export default async function Home() {
     );;
   
     return (
-      <main className="flex h-screen w-full justify-center text-black">
-        <span>
-          loading.tsx
-        </span>
-      <div className="h-full w-full border-x-2 border-slate-400 md:max-w-2xl bg-gradient-to-b from-[#030712] to-[#374151] ">
-        <h1 className="text-2xl font-extrabold tracking-tight sm:text-[3rem]">
-
-          <div className="flex p-4 gap-4 border-slate-50 border-b-2 text-slate-300">
-          welcome {user?.firstName} →
-          <SignedIn>
-            <div>
-              <span className="content-right h-screen">
-                  <UserButton/>
-              </span>
-            </div>
-          </SignedIn>
-        </div>
-          <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
-        </h1>
-          <div className="flex w-full p-4 gap-4 border-b-2 border-slate-50">
-            <Image src={user.imageUrl} alt={`@${user.username} 's profile picture`} width={56} height={56} className="h-14 w-14 rounded-full"/ >
-            <input placeholder="What's up?" className="grow bg-transparent outline-none text-slate-300"/>  
-          </div>
-            <div className="flex flex-col border-b-2 border-slate-50">
-              {[...data]?.map((fullOrder) => (<OrderView {...fullOrder} key={fullOrder.order.id}/>))} 
-            </div>
-            <div>
-            </div>
-      </div>
-    </main>)
+      <LoggedIn/>)
    }
 
-async function CrudShowcase() {
-  const latestPost = await api.post.getLatest.query();
-
-  return (
-    <div className="flex flex-col items-center gap-2">
-      {latestPost ? (
-        <p className="truncate">Your most recent post: {latestPost.name}</p>
-      ) : (
-        <p>You have no posts yet.</p>
-      )}
-
-      <CreatePost />
-    </div>
-  );
-}
