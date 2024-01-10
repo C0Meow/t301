@@ -11,6 +11,7 @@ export default function CreateOrderWizard(){
     const {mutate} = api.orders.create.useMutation();
   
     if(!user) return null;
+    if(!user?.user?.imageUrl) return null;
   
     return (
       <div className="flex w-full p-4 gap-4 border-b-2 border-slate-50">

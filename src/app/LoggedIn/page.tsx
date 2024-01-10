@@ -1,13 +1,10 @@
 import { SignIn, SignInButton, SignedIn, SignedOut, UserButton, currentUser } from "@clerk/nextjs";
-import Link from "next/link";
-import { CreatePost } from "~/app/_components/create-post";
 import type { RouterOutputs } from "~/trpc/shared";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime"
 import Image from "next/image";
 import { sleep } from "~/utils";
 import { api } from "~/trpc/server";
-import { string } from "zod";
 import CreateOrderWizard from "./typesmth";
 
 dayjs.extend(relativeTime);
@@ -26,7 +23,7 @@ const OrderView = (props: OrderWithUser) =>{
               {` · ${dayjs(order.createdAt).fromNow()}`}
             </span>
           </div>
-           <span>{order.id} {order.name } {order.content}</span>
+           <span>{order.id} {order.content}</span>
         </div>
       </div>
     );
