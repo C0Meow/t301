@@ -54,6 +54,7 @@ export const orderRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
     const order = await ctx.db.order.findMany({
       take: 100,
+      orderBy: { createdAt: "desc" },
     });
 
     const users = (

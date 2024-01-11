@@ -1,12 +1,8 @@
 import { SignIn, SignInButton, SignedIn, SignedOut, UserButton, currentUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
-import { CreatePost } from "~/app/_components/create-post";
 import { api } from "~/trpc/server";
 import type { RouterOutputs } from "~/trpc/shared";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime"
-import Image from "next/image";
 import { sleep } from "~/utils";
 import LoggedIn from "./LoggedIn/page";
 
@@ -17,7 +13,6 @@ export default async function Home() {
 
   const user = await currentUser();
   
-  console.log(user);
     if(!user) return ( 
       <main className="flex h-screen w-full justify-center text-black">
         <span>
