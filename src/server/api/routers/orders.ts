@@ -3,6 +3,8 @@ import { clerkClient, useUser } from "@clerk/nextjs";
 import { TRPCError } from "@trpc/server";
 import { Input } from "postcss";
 import { z } from "zod";
+import { Ratelimit } from "@upstash/ratelimit"; // for deno: see above
+import { Redis } from "@upstash/redis"; // see below for cloudflare and fastly adapters
 
 import {
   createTRPCRouter,
@@ -15,6 +17,19 @@ const filterUserForClient = (user: User) => {
   return { id: user.id, username: user.username, imageurl: user.imageUrl };
 };
 
+// Create a new ratelimiter, that allows 10 requests per 1 minute
+const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(10, "1 m"),
+  analytics: true,
+  /**
+   * Optional prefix for the keys used in redis. This is useful if you want to share a redis
+   * instance with other applications and want to avoid key collisions. The default prefix is
+   * "@upstash/ratelimit"
+   */
+  prefix: "@upstash/ratelimit",
+});
+
 export const orderRouter = createTRPCRouter({
   hello: publicProcedure
     .input(z.object({ text: z.string() }))
@@ -23,27 +38,6 @@ export const orderRouter = createTRPCRouter({
         greeting: `Hello ${input.text}`,
       };
     }),
-
-  // create: publicProcedure
-  //   .input(
-  //     z.object({
-  //       name: z.string().min(1),
-  //       userId: z.string().min(1),
-  //       content: z.string().min(1),
-  //     }),
-  //   )
-  //   .mutation(async ({ ctx, input }) => {
-  //     // simulate a slow db call
-  //     await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  //     return ctx.db.order.create({
-  //       data: {
-  //         userId: input.userId,
-  //         name: input.name,
-  //         content: input.content,
-  //       },
-  //     });
-  //   }),
 
   getLatest: publicProcedure.query(({ ctx }) => {
     return ctx.db.order.findFirst({
@@ -96,6 +90,12 @@ export const orderRouter = createTRPCRouter({
           code: "UNAUTHORIZED",
         });
       }
+      const { success } = await ratelimit.limit(ctx.userId);
+
+      if (!success) {
+        throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
+      }
+
       const order = await ctx.db.order.create({
         data: {
           userId: ctx.userId,
