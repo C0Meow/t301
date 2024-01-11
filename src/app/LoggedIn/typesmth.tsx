@@ -12,7 +12,7 @@ export default function CreateOrderWizard(){
     const ctx = api.useUtils();
     const {mutate, isLoading: isPosting} = api.orders.create.useMutation({onSuccess: () =>{
         setInput("");
-        ctx.orders.getAll.invalidate();
+        void ctx.orders.getAll.invalidate();
     }});
   
     if(!user) return null;
