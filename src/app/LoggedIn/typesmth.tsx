@@ -33,7 +33,7 @@ export default function CreateOrderWizard(){
     return (
       <div className="flex w-full p-4 gap-4 border-b-2 border-slate-50">
             <Toaster/>
-            <Image src={user?.user?.imageUrl} alt={`@${user?.user?.username} 's profile picture`} width={56} height={56} className="h-14 w-14 rounded-full"/ >
+            <Image src={user?.user?.imageUrl} alt={`@${user?.user?.username} 's profile picture`} width={56} height={56} className="h-14 w-14 rounded-full"/>
             <input placeholder="What's up?" className="grow bg-transparent outline-none text-slate-300" type="text" value={input} onChange={(e)=>setInput(e.target.value)} disabled={isPosting} onKeyDown={(e)=>{
               if (e.key=== "Enter"){
                 e.preventDefault();
