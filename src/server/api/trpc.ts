@@ -7,10 +7,7 @@
  * need to use are documented accordingly near the end.
  */
 import { auth } from "@clerk/nextjs";
-import { users } from "@clerk/nextjs/api";
-import { contextProps } from "@trpc/react-query/shared";
 import { TRPCError, initTRPC } from "@trpc/server";
-import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import superjson from "superjson";
 import { ZodError } from "zod";
 

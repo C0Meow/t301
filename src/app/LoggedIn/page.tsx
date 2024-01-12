@@ -1,4 +1,4 @@
-import { SignIn, SignInButton, SignedIn, SignedOut, UserButton, currentUser } from "@clerk/nextjs";
+import { SignIn, SignedIn, UserButton, currentUser } from "@clerk/nextjs";
 import type { RouterOutputs } from "~/trpc/shared";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime"
@@ -6,6 +6,7 @@ import Image from "next/image";
 import { sleep } from "~/utils";
 import { api } from "~/trpc/server";
 import CreateOrderWizard from "./typesmth";
+import { PageLayout } from "../_components/thelayout";
 
 dayjs.extend(relativeTime);
 
@@ -37,10 +38,7 @@ export default async function LoggedIn() {
   
     const user = await currentUser();
     return (
-        <main className="flex h-screen w-full justify-center text-black">
-        <div className="h-full w-full border-x-2 border-slate-400 md:max-w-2xl bg-gradient-to-b from-[#030712] to-[#374151] ">
-        <h1 className="text-2xl font-extrabold tracking-tight sm:text-[3rem]">
-
+        <PageLayout>
           <div className="flex p-4 gap-4 border-slate-50 border-b-2 text-slate-300">
           welcome {user?.firstName} →
           <SignedIn>
@@ -52,15 +50,13 @@ export default async function LoggedIn() {
           </SignedIn>
         </div>
           <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
-        </h1>
           <CreateOrderWizard/>
             <div className="flex flex-col border-b-2 border-slate-50">
               {[...data]?.map((fullOrder) => (<OrderView {...fullOrder} key={fullOrder.order.id}/>))} 
             </div>
             <div>
             </div>
-      </div>
-      </main>
+        </PageLayout>
     )
   }
 

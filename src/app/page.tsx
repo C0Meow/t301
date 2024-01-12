@@ -1,8 +1,6 @@
-import { SignIn, SignInButton, SignedIn, SignedOut, UserButton, currentUser } from "@clerk/nextjs";
+import { SignIn, SignInButton, SignedOut, currentUser } from "@clerk/nextjs";
 import Link from "next/link";
-import { useUser } from "@clerk/nextjs";
 import { api } from "~/trpc/server";
-import type { RouterOutputs } from "~/trpc/shared";
 import { sleep } from "~/utils";
 import LoggedIn from "./LoggedIn/page";
 

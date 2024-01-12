@@ -19,9 +19,8 @@ export default function CreateOrderWizard(){
     },
     onError: (e) => {
         const errorMessage = e.data?.zodError?.fieldErrors.content;
-        console.log("zod", errorMessage);
-        if (errorMessage && errorMessage[0]){
-          toast.error(errorMessage[0]);
+        if (errorMessage?.[0]){
+          toast.error(errorMessage[0]!);
         }
         else {
           toast.error("Failed to post, try again later");

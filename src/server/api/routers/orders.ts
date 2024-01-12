@@ -1,7 +1,6 @@
 import { User } from "@clerk/backend/dist/types/api";
-import { clerkClient, useUser } from "@clerk/nextjs";
+import { clerkClient } from "@clerk/nextjs";
 import { TRPCError } from "@trpc/server";
-import { Input } from "postcss";
 import { z } from "zod";
 import { Ratelimit } from "@upstash/ratelimit"; // for deno: see above
 import { Redis } from "@upstash/redis"; // see below for cloudflare and fastly adapters
@@ -11,7 +10,6 @@ import {
   privateProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
-import { RouterOutputs } from "~/trpc/shared";
 
 const filterUserForClient = (user: User) => {
   return { id: user.id, username: user.username, imageurl: user.imageUrl };
