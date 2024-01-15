@@ -1,5 +1,4 @@
 import { SignIn, SignInButton, SignedOut, currentUser } from "@clerk/nextjs";
-import Link from "next/link";
 import { api } from "~/trpc/server";
 import { sleep } from "~/utils";
 import LoggedIn from "./LoggedIn/page";
