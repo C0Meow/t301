@@ -16,12 +16,11 @@ export default async function Home() {
       <main className="flex h-screen w-full justify-center text-black">
         <div className="h-full w-full border-x-2 border-slate-50 bg-gradient-to-b from-[#fca5a5] to-[#f8fafc] ">
           <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-          <Image src="https://i.imgur.com/PFbhzs3.jpeg" layout="fill" alt="dumb cat"/>
+          <Image src="https://i.imgur.com/6sboNJ1.jpeg" layout="fill" alt="grass msg box"/>
             <SignedOut>
               <SignInButton>
                 <div className="absolute top-0 right-0 flex h-screen w-screen items-center justify-center">
                 <button className="flex gap-4 p-4">
-                  Click here to sign in
                 </button>
                 </div>
               </SignInButton>
