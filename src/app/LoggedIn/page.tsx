@@ -40,7 +40,7 @@ export default async function LoggedIn() {
     return (
         <PageLayout>
           <div className="flex p-4 gap-4 border-slate-50 border-b-2 text-slate-300">
-          welcome {user?.firstName} →
+           {user?.firstName}, 歡迎來到草仔留言信箱!
           <SignedIn>
             <div>
               <span className="content-right h-screen">
