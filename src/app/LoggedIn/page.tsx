@@ -7,6 +7,7 @@ import { sleep } from "~/utils";
 import { api } from "~/trpc/server";
 import CreateOrderWizard from "./typesmth";
 import { PageLayout } from "../_components/thelayout";
+import './loggedin.css';
 
 dayjs.extend(relativeTime);
 

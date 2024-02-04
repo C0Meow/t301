@@ -3,7 +3,17 @@ import { api } from "~/trpc/server";
 import { sleep } from "~/utils";
 import LoggedIn from "./LoggedIn/page";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 
+export type CartItemType={
+  id: number;
+  category: string;
+  description: string;
+  image: string;
+  price: number;
+  title: string;
+  amount: number;
+};
 
 
 export default async function Home() {
@@ -54,6 +64,6 @@ export default async function Home() {
     );;
   
     return (
-      <LoggedIn/>)
+      redirect('LoggedIn'));
    }
 
