@@ -8,6 +8,9 @@ import { api } from "~/trpc/server";
 import CreateOrderWizard from "./typesmth";
 import { PageLayout } from "../_components/thelayout";
 import './loggedin.css';
+import NavigationBar from "./navbar";
+import { redirect } from "next/navigation";
+
 
 dayjs.extend(relativeTime);
 
@@ -41,7 +44,7 @@ export default async function LoggedIn() {
     return (
         <PageLayout>
           <div className="flex p-4 gap-4 border-slate-50 border-b-2 text-slate-300">
-           {user?.firstName}, 歡迎來到草仔留言信箱!
+           {user?.firstName}, 歡迎來到留言信箱!
           <SignedIn>
             <div>
               <span className="content-right h-screen">
@@ -50,12 +53,10 @@ export default async function LoggedIn() {
             </div>
           </SignedIn>
         </div>
-          <SignIn path="/sign-in" routing="path" signUpUrl="/sign-up" />
+            <NavigationBar/>
           <CreateOrderWizard/>
             <div className="flex flex-col border-b-2 border-slate-50">
               {[...data]?.map((fullOrder) => (<OrderView {...fullOrder} key={fullOrder.order.id}/>))} 
-            </div>
-            <div>
             </div>
         </PageLayout>
     )

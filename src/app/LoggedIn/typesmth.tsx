@@ -41,7 +41,7 @@ export default function CreateOrderWizard(){
                   mutate({contentInput: input});
                 }
               }
-            }}/>  
+            }}/> 
             {input !== "" && !isPosting && (<button className="text-white" onClick={()=>mutate({contentInput: input})} disabled={isPosting}>Post</button>)}
             {isPosting && (<div className="flex flex-col justify-center">
               <SmallLoading/>
