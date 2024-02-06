@@ -1,4 +1,4 @@
-import { SignIn, SignedIn, UserButton, currentUser } from "@clerk/nextjs";
+import { SignedIn, UserButton, currentUser } from "@clerk/nextjs";
 import type { RouterOutputs } from "~/trpc/shared";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime"
@@ -9,7 +9,6 @@ import CreateOrderWizard from "./typesmth";
 import { PageLayout } from "../_components/thelayout";
 import './loggedin.css';
 import NavigationBar from "./navbar";
-import { redirect } from "next/navigation";
 
 
 dayjs.extend(relativeTime);

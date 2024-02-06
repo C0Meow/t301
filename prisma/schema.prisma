@@ -30,3 +30,15 @@ model Order {
 
     @@index([userId ])
 }
+
+model Product{
+  id        Int      @id @default(autoincrement())
+  description String
+  category String
+  image String
+  price Float
+  title String
+  amount Int
+
+  @@index([id ])
+}

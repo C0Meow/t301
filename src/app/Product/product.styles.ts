@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { IconButton } from "@mui/material";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 export const Wrapper = styled.div`
   margin: 40px;
