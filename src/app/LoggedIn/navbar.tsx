@@ -28,5 +28,10 @@ export default function NavigationBar(){
         <StyledButton onClick={()=>ProductPage(router)}>
               <Button variant="contained">Product Page</Button>
         </StyledButton>
+        <div>
+        <StyledButton onClick={()=>CommentPage(router)}>
+              <Button variant="contained">Comment Page</Button>
+        </StyledButton>
+        </div>
         </p>
             )}
