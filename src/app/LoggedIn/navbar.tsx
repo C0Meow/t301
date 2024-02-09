@@ -12,6 +12,10 @@ export async function ProductPage(router: AppRouterInstance) {
   router.push("Product")
 }
 
+export async function CommentPage(router: AppRouterInstance) {
+  router.push("LoggedIn")
+}
+
 export default function NavigationBar(){
     const router = useRouter()
     const user = useUser();
@@ -21,7 +25,7 @@ export default function NavigationBar(){
     
     return (
       <p className="flex w-full p-4 gap-4 border-slate-50 border-b-2 ">
-            <StyledButton onClick={()=>ProductPage(router)}>
+        <StyledButton onClick={()=>ProductPage(router)}>
               <Button variant="contained">Product Page</Button>
         </StyledButton>
         </p>

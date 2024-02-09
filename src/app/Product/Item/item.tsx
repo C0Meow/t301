@@ -2,7 +2,7 @@ import Button from '@mui/material/Button';
 import { Wrapper } from './item.styles';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import * as React from 'react';
-import type { CartItemType } from '../page';
+import type { CartItemType, ItemProperty } from '../page';
 
 // type Props = {
 //     item: CartItemType;
@@ -10,16 +10,16 @@ import type { CartItemType } from '../page';
 // }
 
 export default function Item(props:{
-    item: CartItemType;
-    handleAddToCart: (clickedItem: CartItemType) => void;
+    item: ItemProperty;
+    handleAddToCart: (clickedItem: ItemProperty) => void;
 }){
     return(
         <Wrapper>
-        <img src={props.item.products.image} alt={props.item.products.title} />
+        <img src={props.item.image} alt={props.item.title} />
         <div>
-            <h3>{props.item.products.title}</h3>
-            <p>{props.item.products.description}</p>
-            <h3>${props.item.products.price}</h3>
+            <h3>{props.item.title}</h3>
+            <p>{props.item.description}</p>
+            <h3>${props.item.price}</h3>
         </div>
         <Button variant="outlined" onClick={()=>props.handleAddToCart(props.item)}><AddShoppingCartIcon/>Add to Cart</Button>
     </Wrapper>

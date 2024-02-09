@@ -1,6 +1,7 @@
 import CartItem from "../CartItem/cartitem";
 import { Wrapper } from "./cart.styles";
 import type { CartItemType } from '../page';
+import type { ItemProperty } from '../page';
 
 // type Props = {
 //     cartItems: CartItemType[];
@@ -28,8 +29,8 @@ import type { CartItemType } from '../page';
 
 
 export default function Cart(props: {
-    cartItems: CartItemType[],
-    addToCart: (clickedItem: CartItemType) => void,
+    cartItems: ItemProperty[],
+    addToCart: (clickedItem: ItemProperty) => void,
     removeFromCart: (id: number) => void,
   }){
     return( <Wrapper>
@@ -37,7 +38,7 @@ export default function Cart(props: {
             {props.cartItems.length === 0 ? <p>No Items in Cart. </p> : null}
             {props.cartItems.map(item=>(
                 <CartItem
-                    key={item.products.id}
+                    key={item.id}
                     item={item}
                     addToCart={props.addToCart}
                     removeFromCart={props.removeFromCart}     

@@ -13,6 +13,7 @@ import Cart from "./Cart/cart";
 import { api } from "~/trpc/react";
 import { RouterOutputs } from "~/trpc/shared";
 import LinearWithValueLabel from "./linearwithvaluelabel";
+import NavigationBar from "../LoggedIn/navbar";
 
 // export type CartItemType={
 //   id: number;
@@ -25,6 +26,7 @@ import LinearWithValueLabel from "./linearwithvaluelabel";
 // };
 
 export type CartItemType = RouterOutputs["products"]["getAll"][number];
+export type ItemProperty = CartItemType["products"];
 
 
 export default async function StorePage(){
@@ -38,20 +40,20 @@ export default async function StorePage(){
     console.log(data);
 
     const [cartOpen, setCartOpen] = useState(false);
-    const [cartItems, setCartItems] = useState([] as CartItemType[]);
+    const [cartItems, setCartItems] = useState([] as ItemProperty[]);
 
-    const getTotalItems = (items: CartItemType[]) =>
-      items.reduce((ack: number, item)=> ack + item.products.amount, 0)
+    const getTotalItems = (items: ItemProperty[]) =>
+      items.reduce((ack: number, item)=> ack + item.amount, 0)
     ;
-    const handleAddToCart = (clickedItem: CartItemType) => {
+    const handleAddToCart = (clickedItem: ItemProperty) => {
       setCartItems(prev => {
         // 1. Is the item already added in the cart?
-        const isItemInCart = prev.find(item => item.products.id === clickedItem.products.id);
+        const isItemInCart = prev.find(item => item.id === clickedItem.id);
   
         if (isItemInCart) {
           return prev.map(item =>
-            item.products.id === clickedItem.products.id
-              ? { ...item, amount: item.products.amount + 1 }
+            item.id === clickedItem.id
+              ? { ...item, amount: item.amount + 1 }
               : item
           );
         }
@@ -62,13 +64,13 @@ export default async function StorePage(){
     const handleRemoveFromCart = (id: number) => {
       setCartItems(prev =>
         prev.reduce((ack, item) => {
-          if (item.products.id === id) {
-            if (item.products.amount === 1) return ack;
-            return [...ack, { ...item, amount: item.products.amount - 1 }];
+          if (item.id === id) {
+            if (item.amount === 1) return ack;
+            return [...ack, { ...item, amount: item.amount - 1 }];
           } else {
             return [...ack, item];
           }
-        }, [] as CartItemType[])
+        }, [] as ItemProperty[])
       );
     };
 
@@ -80,6 +82,7 @@ export default async function StorePage(){
         <Drawer anchor='right' open={cartOpen} onClose={()=>setCartOpen(false)}>
           <Cart cartItems={cartItems} addToCart={handleAddToCart} removeFromCart={handleRemoveFromCart}/>
         </Drawer>
+        <NavigationBar/>
         <StyledButton onClick={()=>setCartOpen(true)}>
           <Badge badgeContent={getTotalItems(cartItems)} color='error'>
             <AddShoppingCartIcon />
@@ -88,7 +91,7 @@ export default async function StorePage(){
         <Grid container spacing={3}>
             {data?.map(item => (
                 <Grid item key={item.products.id} xs={12} sm={4}>
-                    <Item item={item} handleAddToCart={handleAddToCart} />
+                    <Item item={item.products} handleAddToCart={handleAddToCart} />
                 </Grid>
             ))}
         </Grid>

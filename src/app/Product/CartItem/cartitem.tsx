@@ -1,4 +1,4 @@
-import type { CartItemType } from "../page";
+import type { CartItemType, ItemProperty } from "../page";
 import { Wrapper } from "./cartitem.styles";
 import { Button } from "@mui/material";
 
@@ -10,27 +10,27 @@ import { Button } from "@mui/material";
 
 
 export default function CartItem(props:{
-  item: CartItemType;
-  addToCart: (clickedItem: CartItemType)=> void;
+  item: ItemProperty;
+  addToCart: (clickedItem: ItemProperty)=> void;
   removeFromCart: (id: number)=> void;
 }){
   return(<Wrapper>
     <div>
-      <h3>{props.item.products.title}</h3>
+      <h3>{props.item.title}</h3>
       <div className='information'>
-        <p>Price: ${props.item.products.price}</p>
-        <p>Total: ${(props.item.products.amount * props.item.products.price).toFixed(2)}</p>
+        <p>Price: ${props.item.price}</p>
+        <p>Total: ${(props.item.amount * props.item.price).toFixed(2)}</p>
       </div>
       <div className='buttons'>
         <Button
           size='small'
           disableElevation
           variant='outlined'
-          onClick={() => props.removeFromCart(props.item.products.id)}
+          onClick={() => props.removeFromCart(props.item.id)}
         >
           -
         </Button>
-        <p>{props.item.products.amount}</p>
+        <p>{props.item.amount}</p>
         <Button
           size='small'
           disableElevation
@@ -41,6 +41,6 @@ export default function CartItem(props:{
         </Button>
       </div>
     </div>
-    <img src={props.item.products.image} alt={props.item.products.title} />
+    <img src={props.item.image} alt={props.item.title} />
   </Wrapper>)
 };
