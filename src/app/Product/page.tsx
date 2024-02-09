@@ -13,7 +13,7 @@ import Cart from "./Cart/cart";
 import { api } from "~/trpc/react";
 import { RouterOutputs } from "~/trpc/shared";
 import LinearWithValueLabel from "./linearwithvaluelabel";
-import NavigationBar from "../LoggedIn/navbar";
+import NavigationBarForProduct from "./navbarforproduct";
 
 // export type CartItemType={
 //   id: number;
@@ -82,7 +82,7 @@ export default async function StorePage(){
         <Drawer anchor='right' open={cartOpen} onClose={()=>setCartOpen(false)}>
           <Cart cartItems={cartItems} addToCart={handleAddToCart} removeFromCart={handleRemoveFromCart}/>
         </Drawer>
-        <NavigationBar/>
+        <NavigationBarForProduct/>
         <StyledButton onClick={()=>setCartOpen(true)}>
           <Badge badgeContent={getTotalItems(cartItems)} color='error'>
             <AddShoppingCartIcon />
